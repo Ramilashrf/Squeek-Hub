@@ -242,12 +242,21 @@ html:not([data-mode=overlay]) body {
 .footer{flex-wrap:wrap}
 .built-by a{color:var(--lime)}
 
-/* Let the page grid show through the Radio panels. */
+/* Let the page grid show through panels across the site. */
 .radio-intro #player,
-.telemetry .tile {
+.tile,
+html:not([data-mode=overlay]) .studio-workspace .panel {
   background: rgba(21, 28, 23, .68);
 }
 
 .next > a {
   background: rgba(17, 25, 20, .68);
+}
+
+html:not([data-mode=overlay]) .studio-workspace .stage {
+  background-color: rgba(16, 23, 17, .68);
+}
+
+.run-compare {
+  background: rgba(16, 23, 17, .68);
 }
