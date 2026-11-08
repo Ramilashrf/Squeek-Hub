@@ -84,9 +84,10 @@ Open [http://localhost:4173](http://localhost:4173) in your browser. The site us
 | `dist/oracle.html`, `dist/oracle.mjs`, and `dist/prediction.mjs` | Charts, run archive, and predictions |
 | `dist/runs.json` and `dist/rounds.json` | Recorded runs and historical round data |
 | `dist/assets/` | Images, animations, and audio files |
+| [`extension/`](extension/) | Chrome extension manifest, background script, and packaging script |
 | `dist/squeek-hub-chrome-extension.zip` | Downloadable Chrome extension package |
 
-If your checkout includes the `extension/` source folder and you change the Studio or extension sources, rebuild the downloadable package:
+After changing Studio or the extension sources, rebuild the downloadable package:
 
 ```bash
 python3 extension/package.py
