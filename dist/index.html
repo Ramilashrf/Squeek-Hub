@@ -10,7 +10,7 @@
 <script type="module" src="./radio.mjs"></script>
 </head>
 <body>
-<header class="mast"><div class="shell mast-inner"><a class="brand" href="./"><i aria-hidden="true"><svg viewBox="20 24 56 52" focusable="false"><path d="M29 37v-7h9v5h20v-5h9v7h5v22h-7v7H31v-7h-7V37z" fill="#f0a965" stroke="#392338" stroke-width="2" stroke-linejoin="round"/><path d="M32 34h5v4h-5zm27 0h5v4h-5z" fill="#e07c8e"/><path d="M34 52h9v-5h10v5h9v8h-5v4H39v-4h-5z" fill="#ffe7c2"/><path d="M33 45h5v6h-5zm25 0h5v6h-5zm12 8h5v4h-5zm-48 0h5v4h-5z" fill="#372438"/><path d="M45 52h6v4h-6z" fill="#ab576f"/></svg></i><span>SQUEEK<span class="brand-accent">HUB</span><small>THE WHEEL NETWORK</small></span></a><nav aria-label="Main navigation"><a href="./" aria-current="page">Radio</a><a href="./studio.html">Studio</a><a href="./oracle.html">Oracle</a></nav><span class="mast-tag">INDEPENDENT<br>BROADCAST</span></div></header>
+<header class="mast"><div class="shell mast-inner"><a class="brand" href="./"><i aria-hidden="true"><svg viewBox="20 24 56 52" focusable="false"><path d="M29 37v-7h9v5h20v-5h9v7h5v22h-7v7H31v-7h-7V37z" fill="#f0a965" stroke="#392338" stroke-width="2" stroke-linejoin="round"/><path d="M32 34h5v4h-5zm27 0h5v4h-5z" fill="#e07c8e"/><path d="M34 52h9v-5h10v5h9v8h-5v4H39v-4h-5z" fill="#ffe7c2"/><path d="M33 45h5v6h-5zm25 0h5v6h-5zm12 8h5v4h-5zm-48 0h5v4h-5z" fill="#372438"/><path d="M45 52h6v4h-6z" fill="#ab576f"/></svg></i><span>SQUEEK<span class="brand-accent">HUB</span></span></a><nav aria-label="Main navigation"><a href="./" aria-current="page">Radio</a><a href="./studio.html">Studio</a><a href="./oracle.html">Oracle</a></nav><span class="mast-tag">INDEPENDENT<br>BROADCAST</span></div></header>
 <main class="shell">
 <div class="radio-intro">
 <section class="hero" aria-labelledby="radio-title">
@@ -34,8 +34,8 @@
 <div class="stats"><div><small>WHEEL</small><strong id="rpm">—</strong><span>RPM</span></div><div><small>TEMPO</small><strong id="tempo">62</strong><span>BPM</span></div></div>
 <button id="play" class="play" type="button" aria-label="Play radio"><span id="play-icon" aria-hidden="true">▶</span></button>
 </div>
-<div class="player-bottom"><div class="stations" role="group" aria-label="Station"><button type="button" data-station="burrow" aria-pressed="true">01 &nbsp; Burrow FM</button><button type="button" data-station="night" aria-pressed="false">02 &nbsp; Night Run</button></div>
-<button type="button" id="demo" class="sample" aria-pressed="false">Try sample signal</button>
+<div class="player-bottom"><div class="stations" role="group" aria-label="Radio station and signal controls"><button type="button" data-station="burrow" aria-pressed="true">Burrow FM</button><button type="button" data-station="night" aria-pressed="false">Night Run</button>
+<button type="button" id="demo" aria-pressed="false">Try sample signal</button></div>
 <label class="volume">Volume <input id="volume" type="range" min="0" max="100" value="65"><output id="level" for="volume">65%</output></label></div>
 <div class="audio-options"><button type="button" id="audio-mode" class="sample">Use compatible audio</button><span id="audio-mode-note" hidden>Compatible mode follows wheel tempo with a fixed arrangement.</span></div>
 <p id="audio-error" role="alert" hidden></p>
