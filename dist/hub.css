@@ -261,13 +261,6 @@ html:not([data-mode=overlay]) .studio-workspace .stage {
   background: rgba(16, 23, 17, .68);
 }
 
-.mast-tools{display:flex;align-items:center;gap:14px}
-.theme-toggle{border:1px solid var(--line);border-radius:20px;background:var(--panel);color:var(--ink);padding:7px 12px;font-size:12px;font-weight:700;white-space:nowrap}
-.theme-toggle:hover,.theme-toggle[aria-pressed=true]{border-color:var(--lime);color:var(--lime)}
-@media(max-width:460px){
-  .mast-inner{flex-wrap:wrap;gap:8px;padding-block:8px}
-  .mast nav{order:1;flex-basis:100%;justify-content:center}
-}
 
 html[data-color-mode=dark]:not([data-mode=overlay]){
   --paper:#070707;
