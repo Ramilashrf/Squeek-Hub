@@ -14,12 +14,6 @@ The forecast uses a fixed snapshot of 527 settled Sepolia rounds through 2026-11
 
 The radio cover is generated illustration, not a live camera image.
 
-## Run or deploy
-
-Serve the `dist/` directory over HTTP. For example, use `python3 -m http.server 4173 --directory dist`. There is no build step. On a private site, download the Studio overlay to use it in OBS.
-
-[Squeekchain API](https://docs.squeekchain.com/developers/api/) · [OBS Browser Source](https://obsproject.com/kb/browser-source)
-
 ## Chrome extension
 
 1. Unzip `dist/squeek-hub-chrome-extension.zip`.
