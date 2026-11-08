@@ -44,7 +44,7 @@ To update the extension, extract the new ZIP, copy its contents into the existin
 
 - **Activity map** shows wheel activity over the past seven days. Brighter green indicates more activity, gray indicates a recorded zero, and a dotted area indicates missing data. Times are shown in UTC.
 - **Chance of wheel activity** estimates the probability of movement in the next 10-minute round. It uses historical activity from the same UTC time slot and the overall activity rate. The probability is hidden when the archive is stale or has too little data.
-- **Guess the next run** lets you choose **Wheel moves** or **Wheel stays still**. Keep the Oracle tab open so it can collect readings. If the outcome can be verified, your guess is scored and compared with Oracle's prediction when one is available. Your score is stored in your browser.
+- **Guess the next run** lets you choose **Yes** or **No**. Keep the Oracle tab open so it can collect readings. If the outcome can be verified, your guess is scored and compared with Oracle's prediction when one is available. Your score is stored in your browser.
 - **Oracle Report Card** tests predictions against archived rounds in chronological order. Each prediction uses only earlier rounds. The table shows predicted probabilities, observed activity rates, and the number of rounds tested in each probability range.
 
 ### Explore a recorded run
