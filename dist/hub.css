@@ -241,3 +241,13 @@ html:not([data-mode=overlay]) body {
 
 .footer{flex-wrap:wrap}
 .built-by a{color:var(--lime)}
+
+/* Let the page grid show through the Radio panels. */
+.radio-intro #player,
+.telemetry .tile {
+  background: rgba(21, 28, 23, .68);
+}
+
+.next > a {
+  background: rgba(17, 25, 20, .68);
+}
