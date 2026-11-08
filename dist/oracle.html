@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Squeek Hub — Oracle</title><link rel="stylesheet" href="./hub.css"><script type="module" src="./oracle.mjs"></script></head><body><header class="mast"><div class="shell mast-inner"><a class="brand" href="./"><i aria-hidden="true"><svg viewBox="20 24 56 52" focusable="false"><path d="M29 37v-7h9v5h20v-5h9v7h5v22h-7v7H31v-7h-7V37z" fill="#f0a965" stroke="#392338" stroke-width="2" stroke-linejoin="round"/><path d="M32 34h5v4h-5zm27 0h5v4h-5z" fill="#e07c8e"/><path d="M34 52h9v-5h10v5h9v8h-5v4H39v-4h-5z" fill="#ffe7c2"/><path d="M33 45h5v6h-5zm25 0h5v6h-5zm12 8h5v4h-5zm-48 0h5v4h-5z" fill="#372438"/><path d="M45 52h6v4h-6z" fill="#ab576f"/></svg></i><span>SQUEEK<span class="brand-accent">HUB</span><small>THE WHEEL NETWORK</small></span></a><nav aria-label="Main navigation"><a href="./">Radio</a><a href="./studio.html">Studio</a><a href="./oracle.html" aria-current="page">Oracle</a></nav><span class="mast-tag">INDEPENDENT<br>BROADCAST</span></div></header>
+<main class="shell">
+<section class="subhead"><p class="kicker">03 / THE WHEEL ARCHIVE</p><h1>Read the wheel.</h1><p>Explore measured activity, listen to past runs and see what the history suggests about the next round.</p></section>
+<div class="oracle-grid">
+<section class="tile"><p class="kicker">EXPERIMENTAL · NEXT 10-MINUTE ROUND</p><h2>Chance of wheel activity</h2><div class="forecast-number" id="chance">—</div><p id="forecast-detail" class="muted" role="status">Loading settled rounds…</p><p class="muted" id="backtest"></p></section>
+<section class="tile prediction" aria-labelledby="guess-title"><p class="kicker">FREE PREDICTION / LOCAL SCORE</p>
+<h2 id="guess-title">Guess the next run</h2><p>Will the wheel move in the next scheduled 10-minute round?</p>
+<div class="prediction-actions"><button type="button" data-guess="moves" disabled>Wheel moves</button><button type="button" data-guess="still" disabled>Wheel stays still</button></div>
+<p id="guess-status" class="muted" role="status"></p><p id="guess-score"></p><ol id="guess-history"></ol>
+<p class="muted">Keep Oracle open to collect readings. A result only scores when the hardware counter verifies it. Predictions and scores are stored in this browser.</p>
+</section>
+<section class="tile"><p class="kicker">SEPOLIA / SETTLED WORK</p><h2>What the wheel recorded</h2><dl id="distribution" class="distribution"><dt>0 work</dt><dd>—</dd><dt>1–499 work</dt><dd>—</dd><dt>500+ work</dt><dd>—</dd></dl><p class="muted" id="round-source"></p></section>
+</div>
+<section class="tile report-card" aria-labelledby="report-title">
+<p class="kicker">ORACLE / HISTORICAL PERFORMANCE</p><h2 id="report-title">Oracle Report Card</h2>
+<p class="muted">Each forecast is reconstructed using only earlier archived rounds. A round counts as active when it recorded work.</p>
+<p class="muted" id="report-status" role="status">Loading the settled round archive…</p>
+<div id="report-tables" hidden>
+<div class="report-scroll" tabindex="0" aria-label="Forecast calibration table">
+<table><caption>Forecast vs. observed movement</caption>
+<thead><tr><th scope="col">Forecast range</th><th scope="col">Average forecast</th><th scope="col">Rounds that moved</th><th scope="col">Rounds tested</th></tr></thead>
+<tbody id="report-calibration"></tbody></table></div>
+<div class="report-scroll" tabindex="0" aria-label="Recent historical forecasts">
+<table><caption>Latest 12 archived test rounds</caption>
+<thead><tr><th scope="col">Round start (UTC)</th><th scope="col">Forecast</th><th scope="col">Result</th></tr></thead>
+<tbody id="report-rounds"></tbody></table></div>
+</div>
+</section>
+<section class="tile"><p class="kicker">ACTIVITY MAP · UTC</p><h2>When the wheel moved</h2><p class="muted" id="coverage" role="status">Loading wheel activity…</p><div class="heat-scroll" tabindex="0" aria-label="Scrollable wheel activity heatmap"><div id="heat" class="heat"></div></div><p class="muted">Brighter green means more recorded work. Gray means measured zero. Dotted cells have incomplete or missing data. Wheel inactivity does not establish sleep. No feeding data is included.</p></section>
+<section class="tile" id="replays"><p class="kicker">RUN REPLAY / RECORDED SENSOR PASSAGES</p><h2>Hear a past run.</h2><p class="muted">These excerpts come from timestamped hardware passages. Open one in either tool to replay its motion.</p><label class="run-sort">Sort runs <select id="run-sort"><option value="newest">Newest first</option><option value="duration">Longest first</option><option value="peak">Highest peak RPM</option></select></label><section class="run-compare" aria-labelledby="compare-title">
+<h3 id="compare-title">Compare two runs</h3>
+<div class="compare-selects"><label>Run A <select id="compare-a"></select></label><label>Run B <select id="compare-b"></select></label></div>
+<svg viewBox="0 0 600 96" preserveAspectRatio="none" role="img" id="compare-chart" aria-label="RPM by elapsed time for both runs"><path class="chart-grid" d="M0 2H600 M0 48H600 M0 94H600"/><path class="trace-a" id="compare-line-a"/><path class="trace-b" id="compare-line-b"/></svg>
+<div class="chart-axis"><span>START</span><span id="compare-scale"></span><span id="compare-end"></span></div>
+<div class="compare-selects compare-stats" aria-live="polite"><span id="compare-stats-a"></span><span id="compare-stats-b"></span></div>
+</section><div class="run-list" id="runs" aria-live="polite"></div></section>
+<dialog id="postcard" class="postcard-dialog" aria-labelledby="postcard-title">
+<div class="postcard-top"><h2 id="postcard-title">Radio Postcard</h2><button type="button" id="postcard-close">Close</button></div>
+<canvas id="postcard-canvas" width="768" height="432" aria-label="Postcard preview"></canvas>
+<label class="postcard-range">Clip start <input id="postcard-start" type="range" min="0" max="0" step="1" value="0"><output id="postcard-window"></output></label>
+<div class="postcard-top"><label>Station <select id="postcard-station"><option value="burrow">Burrow FM</option><option value="night">Night Run</option></select></label><button type="button" id="postcard-export">Export video</button></div>
+<p id="postcard-status" class="muted" role="status"></p>
+</dialog></main><footer class="shell footer"><span>SQUEEK HUB · COMMUNITY PROJECT</span><a href="https://docs.squeekchain.com/developers/api/" target="_blank" rel="noopener noreferrer">Squeekchain data ↗</a><span class="built-by">Built by <a href="https://x.com/ramilashrff" target="_blank" rel="noopener noreferrer">@ramilashrff</a></span></footer></body></html>

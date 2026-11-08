@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0d1210">
+<meta name="description" content="Hear Squeektoshi’s wheel, replay real runs and put live telemetry on your stream.">
+<title>Squeek Hub — Radio</title>
+<link rel="stylesheet" href="./hub.css">
+<script type="module" src="./radio.mjs"></script>
+</head>
+<body>
+<header class="mast"><div class="shell mast-inner"><a class="brand" href="./"><i aria-hidden="true"><svg viewBox="20 24 56 52" focusable="false"><path d="M29 37v-7h9v5h20v-5h9v7h5v22h-7v7H31v-7h-7V37z" fill="#f0a965" stroke="#392338" stroke-width="2" stroke-linejoin="round"/><path d="M32 34h5v4h-5zm27 0h5v4h-5z" fill="#e07c8e"/><path d="M34 52h9v-5h10v5h9v8h-5v4H39v-4h-5z" fill="#ffe7c2"/><path d="M33 45h5v6h-5zm25 0h5v6h-5zm12 8h5v4h-5zm-48 0h5v4h-5z" fill="#372438"/><path d="M45 52h6v4h-6z" fill="#ab576f"/></svg></i><span>SQUEEK<span class="brand-accent">HUB</span><small>THE WHEEL NETWORK</small></span></a><nav aria-label="Main navigation"><a href="./" aria-current="page">Radio</a><a href="./studio.html">Studio</a><a href="./oracle.html">Oracle</a></nav><span class="mast-tag">INDEPENDENT<br>BROADCAST</span></div></header>
+<main class="shell">
+<div class="radio-intro">
+<section class="hero" aria-labelledby="radio-title">
+<div class="hero-copy"><p class="kicker"><span class="dot"></span> SQUEEKTOSHI’S BROADCAST DESK</p>
+<h1 id="radio-title">Music from<br> the <em>wheel.</em></h1>
+<p>Real wheel motion sets the tempo of an original radio mix.</p>
+<div class="hero-links"><a class="plain" href="./oracle.html#replays">Explore recorded runs ↗</a></div></div>
+<div class="radio-art">
+<img class="hero-image" src="./assets/radio-room.webp" width="1536" height="1024" fetchpriority="high" alt="">
+<img class="hero-image studio-pose" data-rest="./assets/studio-rest.webp" data-run="./assets/studio-run.webp" width="768" height="768" alt="" hidden>
+<video class="hero-image studio-animation" data-src="./assets/studio-run.webm" muted loop playsinline preload="none" aria-hidden="true" hidden></video>
+<button class="studio-motion" type="button" hidden>Pause animation</button>
+<div class="hero-credit" aria-hidden="true"><span class="still-credit">SQK / FM &nbsp; · &nbsp; COVER ART</span><span class="motion-credit" hidden>STUDIO ANIMATION</span></div>
+</div>
+</section>
+<section id="player" class="player" aria-label="Radio player">
+<div class="player-main">
+<div class="playback"><img class="station-cover" src="./assets/radio-room.webp" alt="">
+<div><p class="kicker" id="signal" data-state="pending" role="status">Connecting</p><h2 id="station-name">Burrow FM</h2><p id="station-description">Swung lo-fi beats, mellow keys and a warm bass groove.</p></div></div>
+<div class="wave" aria-hidden="true"><i style="--h:20%"></i><i style="--h:44%"></i><i style="--h:67%"></i><i style="--h:30%"></i><i style="--h:86%"></i><i style="--h:48%"></i><i style="--h:100%"></i><i style="--h:62%"></i><i style="--h:38%"></i><i style="--h:70%"></i><i style="--h:26%"></i><i style="--h:53%"></i><i style="--h:18%"></i></div>
+<div class="stats"><div><small>WHEEL</small><strong id="rpm">—</strong><span>RPM</span></div><div><small>TEMPO</small><strong id="tempo">62</strong><span>BPM</span></div></div>
+<button id="play" class="play" type="button" aria-label="Play radio"><span id="play-icon" aria-hidden="true">▶</span></button>
+</div>
+<div class="player-bottom"><div class="stations" role="group" aria-label="Station"><button type="button" data-station="burrow" aria-pressed="true">01 &nbsp; Burrow FM</button><button type="button" data-station="night" aria-pressed="false">02 &nbsp; Night Run</button></div>
+<button type="button" id="demo" class="sample" aria-pressed="false">Try sample signal</button>
+<label class="volume">Volume <input id="volume" type="range" min="0" max="100" value="65"><output id="level" for="volume">65%</output></label></div>
+<div class="audio-options"><button type="button" id="audio-mode" class="sample">Use compatible audio</button><span id="audio-mode-note" hidden>Compatible mode follows wheel tempo with a fixed arrangement.</span></div>
+<p id="audio-error" role="alert" hidden></p>
+<audio id="compatible-player" preload="none" loop playsinline></audio>
+<div class="replay-strip" id="replay-strip" hidden><span id="replay-info"></span><button class="sample" id="radio-recap" type="button" hidden>Download recap PNG</button><button class="sample" id="restart" type="button">Restart run</button><a href="./#player">Back to live ↗</a></div>
+<div class="replay-chart" id="replay-chart" hidden>
+<svg viewBox="0 0 600 96" preserveAspectRatio="none" aria-hidden="true"><path class="chart-grid" d="M0 2H600 M0 48H600 M0 94H600"/><path class="trace-a" id="replay-line"/><path id="replay-cursor" d="M0 0V96"/></svg>
+<label class="replay-seek">Run position <input type="range" id="replay-progress" min="0" max="1" step="0.1" value="0" aria-label="Seek through recorded run"><output id="replay-time">0:00 / 0:00</output></label>
+</div>
+</section>
+</div>
+<div class="telemetry">
+<section class="tile wheel-cam" aria-labelledby="cam-title">
+<p class="kicker">LIVE / WHEEL CAM</p><h2 id="cam-title">The wheel room</h2>
+<div class="cam-instruments">
+<svg viewBox="0 0 100 100" class="cam-wheel" aria-hidden="true"><g><circle cx="50" cy="50" r="43"/><circle cx="50" cy="50" r="34"/><path d="M50 8V92M8 50H92M20 20L80 80M20 80L80 20"/><circle cx="50" cy="50" r="7"/></g></svg>
+<svg viewBox="0 0 120 70" class="cam-gauge" aria-hidden="true"><path d="M12 60A48 48 0 0 1 108 60"/><path d="M20 46L26 49M32 27L37 34M60 12V20M88 27L83 34M100 46L94 49"/><path id="cam-needle" d="M60 60V26"/><circle cx="60" cy="60" r="4"/></svg>
+</div>
+<strong id="cam-rpm">— RPM</strong><p id="cam-status" class="muted">Connecting to the live wheel…</p>
+</section>
+<section class="tile live-chart" aria-labelledby="wheel-title">
+<div class="chart-heading"><div><p class="kicker">LIVE TELEMETRY / 5 MIN</p><h2 id="wheel-title">Wheel activity</h2></div><output id="chart-latest">— RPM</output></div>
+<svg id="wheel-chart" viewBox="0 0 600 118" preserveAspectRatio="none" role="img" aria-label="Wheel speed over the last five minutes"><path class="chart-grid" d="M0 1H600 M0 58H600 M0 116H600"/><path id="chart-line"/><circle id="chart-point" r="3" hidden/></svg>
+<div class="chart-axis"><span>5 MIN AGO</span><span id="chart-scale"></span><span>NOW</span></div>
+<p id="chart-note" class="muted">Collecting live readings while this page is open.</p>
+</section></div>
+<section class="next" aria-label="More from Squeek Hub"><a href="./studio.html"><span class="kicker">02 / STUDIO</span><strong>Take it on air.</strong><span class="next-link">Open a floating wheel card ↗</span></a><a href="./oracle.html"><span class="kicker">03 / ORACLE</span><strong>Look behind the signal.</strong><span class="next-link">View activity and replay real runs ↗</span></a></section>
+</main>
+<footer class="shell footer"><span>SQUEEK HUB · COMMUNITY PROJECT</span><a href="https://docs.squeekchain.com/developers/api/" target="_blank" rel="noopener noreferrer">Squeekchain data ↗</a><span class="built-by">Built by <a href="https://x.com/ramilashrff" target="_blank" rel="noopener noreferrer">@ramilashrff</a></span></footer>
+<iframe id="hub-view" class="hub-view" title="Squeek Hub section" hidden allow="clipboard-write"></iframe>
+<aside class="mini-player" id="mini-player" aria-label="Radio mini player" hidden>
+<button id="mini-play" type="button" aria-label="Play radio">▶</button><div><strong id="mini-station">Burrow FM</strong><small id="mini-signal">Connecting</small></div>
+<input id="mini-volume" type="range" min="0" max="100" value="65" aria-label="Radio volume"><a href="./#player">Radio ↗</a>
+</aside>
+<script type="module" src="./hub-nav.mjs"></script>
+</body>
+</html>

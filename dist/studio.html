@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Build a customizable Squeekchain live overlay for OBS and other streaming tools.">
+<meta name="color-scheme" content="dark">
+<title>Squeek Hub — Studio</title>
+<link rel="stylesheet" href="./hub.css" id="hub-css">
+<style>
+:root{color-scheme:dark;--bg:#100e15;--panel:#191620;--line:#332c3e;--text:#f6f2fa;--muted:#aaa2b8;--violet:#c3aaff;--accent:#c3aaff;--ink:#171023;--card:#1a1424;--overlay-bg:#1a1424ec;--mono:ui-monospace,SFMono-Regular,Consolas,monospace}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif}button,input,select{font:inherit}button,a,input,select,summary{outline-offset:4px}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--violet)}button{cursor:pointer;color:inherit}a{color:var(--violet);text-decoration:none}a:hover{text-decoration:underline}[hidden]{display:none!important}
+.wrap{width:min(1280px,calc(100% - 72px));margin:auto}.top{border-bottom:1px solid #2a2433}.top .wrap{display:flex;align-items:center;justify-content:space-between;min-height:68px;gap:16px}.brand{display:flex;align-items:center;gap:11px;color:var(--text);font-weight:780;letter-spacing:-.035em}.brand-mark{display:grid;place-items:center;background:#b99af8;color:#211132;width:34px;height:34px;border-radius:9px;font-size:19px}.navlink{font:11px var(--mono);color:var(--muted)}.eyebrow,.label,.small,.feed{font:11px var(--mono);letter-spacing:.10em;text-transform:uppercase}.eyebrow{color:var(--violet);margin:0 0 12px}.hero{padding:37px 0 28px}.hero h1{font-size:clamp(32px,5vw,59px);line-height:1.04;letter-spacing:-.065em;margin:0 0 10px;font-weight:780}.hero p:last-child{margin:0;color:var(--muted);font-size:15px}
+.workspace{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:18px;align-items:start}.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden}.bar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:15px 17px;border-bottom:1px solid var(--line);min-height:62px}.bar h2{font-size:15px;margin:0;font-weight:720}.seg{display:inline-flex;background:#100d15;border:1px solid var(--line);padding:3px;border-radius:9px;gap:2px}.seg button{border:0;background:transparent;border-radius:6px;padding:6px 10px;font-size:12px;color:var(--muted);white-space:nowrap}.seg button[aria-pressed=true]{background:#332642;color:#f4eaff}.stage{position:relative;display:grid;place-items:center;min-height:386px;padding:40px 16px;background:radial-gradient(ellipse at 50% 50%,#251938b0,transparent 70%),radial-gradient(circle,#514361 1px,transparent 1.1px) #120e1a;background-size:auto,17px 17px}.stage::before,.stage::after{position:absolute;font:10px var(--mono);color:#afa2c2;letter-spacing:.07em;pointer-events:none}.stage::before{content:'FLOATING CARD';top:15px;left:16px}.stage::after{content:'LIVE WHEEL DATA';bottom:15px;right:16px}.under{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 17px;color:var(--muted);border-top:1px solid var(--line);font:11px var(--mono)}
+.controls{padding:15px 17px;display:grid;gap:16px}.group{display:grid;gap:8px}.label{color:#ccc4d8}.field{width:100%;background:#120f18;border:1px solid #3b3347;color:var(--text);border-radius:8px;padding:8px 10px;min-height:39px}.swatches{display:flex;gap:9px}.swatches button{width:31px;height:31px;background:var(--swatch);border:3px solid #191620;border-radius:50%;outline:1px solid #3e354a}.swatches button[aria-pressed=true]{outline:2px solid var(--swatch);outline-offset:2px}.toggle{display:flex;justify-content:space-between;align-items:center;color:#ded8e8;font-size:13px;gap:12px}.toggle input{accent-color:var(--violet);width:17px;height:17px;margin:0}.actions{display:grid;gap:8px;border-top:1px solid var(--line);padding:14px 17px 17px}.primary,.secondary{border-radius:8px;font-weight:710;font-size:13px;padding:10px 12px;min-height:39px}.primary{color:var(--ink);background:var(--violet);border:1px solid var(--violet)}.primary:hover{background:#dac9ff}.secondary{background:#211b2c;border:1px solid var(--line)}.secondary:hover{background:#342744}.action-note{margin:0;color:var(--muted);font-size:11px;line-height:1.45}.notice{margin:0;color:var(--violet);font-size:11px;line-height:1.45}.guide{margin:16px 0 28px;padding:13px 17px;font-size:13px;color:var(--muted)}.guide summary{cursor:pointer;color:var(--text);font-weight:650}.guide li{margin:6px 0}.guide ol{padding-left:20px}.guide code{color:#e4d3ff}.link-row{display:flex;gap:7px}.link-row input{font:11px var(--mono);min-width:0}
+.widget{width:min(100%,460px);border:1px solid color-mix(in srgb,var(--accent) 42%,#292230);border-radius:17px;background:var(--overlay-bg);box-shadow:0 16px 48px #06030c85;overflow:hidden;color:#f6f2fa}.widget-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;border-bottom:1px solid #ffffff18}.widget-title{font-weight:720;font-size:15px;min-width:0;overflow-wrap:anywhere}.feed{display:inline-flex;align-items:center;gap:6px;font-size:9px;letter-spacing:.06em;white-space:nowrap;color:var(--accent);line-height:1.25}.dot{width:6px;height:6px;border-radius:50%;background:currentColor;display:inline-block;flex:none}.widget-main{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:17px;padding:15px 16px}.wheel-art{display:block;width:92px;height:92px;color:var(--accent)}.rim{transform-origin:48px 48px}.widget[data-moving=true] .rim{animation:spin var(--spin,2s) linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.reading{display:flex;align-items:baseline;gap:7px}.reading strong{font-size:47px;line-height:.98;letter-spacing:-.055em;font-variant-numeric:tabular-nums}.reading span{font:11px var(--mono);color:var(--accent)}.state{color:#c4b9d4;font-size:12px;margin-top:7px}.metric-row{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #ffffff18}.metric-row div{padding:10px 16px;min-width:0}.metric-row div+div{border-left:1px solid #ffffff18}.metric-row span{display:block;color:#bcb0cd;font:9px var(--mono);letter-spacing:.07em;margin-bottom:4px}.metric-row strong{font:14px var(--mono);font-weight:700;overflow-wrap:anywhere}.widget[data-layout=compact]{width:min(100%,400px)}.widget[data-layout=compact] .widget-main{padding:10px 14px}.widget[data-layout=compact] .wheel-art{width:50px;height:50px}.widget[data-layout=compact] .reading strong{font-size:32px}.widget[data-layout=compact] .metric-row div{padding:7px 14px}.widget[data-layout=compact] .widget-top{padding:8px 14px}.widget[data-solid=true]{--overlay-bg:var(--card)}.widget[data-feed=warning] .feed{color:#f4ce83}.widget[data-feed=sample] .feed{color:#ddd0f3}
+html[data-mode=overlay],html[data-mode=overlay] body{background:transparent;overflow:hidden}html[data-mode=overlay] body{padding:10px}html[data-mode=overlay] .widget{box-shadow:none}
+@media(max-width:850px){.wrap{width:calc(100% - 32px)}.workspace{grid-template-columns:minmax(0,1fr) 275px}.stage{min-height:340px}}@media(max-width:670px){.workspace{grid-template-columns:1fr}.hero{padding:28px 0 23px}.top .wrap{min-height:58px}.stage{min-height:300px}.navlink{font-size:10px}}@media(max-width:340px){.widget-main{gap:9px}.wheel-art{width:59px;height:59px}.reading strong{font-size:36px}.under{font-size:9px}}@media(prefers-reduced-motion:reduce){.rim{animation:none!important}}
+html:not([data-mode=overlay]) .studio-workspace{--panel:#151c17;--line:#303c32;--violet:#c9f57a;--ink:#172015;--muted:#abae9f}
+html:not([data-mode=overlay]) .studio-workspace .hero{min-height:0;margin:0;padding:34px 0 22px;background:none;border:none;border-radius:0}
+html:not([data-mode=overlay]) .studio-workspace .hero:after{display:none}
+.studio-workspace .stage{background:radial-gradient(ellipse at 50% 50%,#344832a0,transparent 70%),radial-gradient(circle,#536047 1px,transparent 1.1px) #101711;background-size:auto,17px 17px}
+.studio-workspace .field{background:#0d1510;border-color:#3b4939}.studio-workspace .secondary,.studio-workspace .seg{background:#1c271c}.studio-workspace .seg button[aria-pressed=true]{background:#31412d}.studio-workspace .primary:hover{background:#d9ff9e}
+
+.preset-list{display:flex;gap:6px;flex-wrap:wrap}.preset-list button{font-size:11px;padding:6px 8px}.preset-list button[aria-pressed=true]{color:#dcffa5;border-color:#8fa86a;background:#283721}
+.widget[data-preset=retro]{border-radius:21px;border-color:var(--accent);box-shadow:inset 0 0 22px #9f58243d,0 12px 34px #120702aa;background:linear-gradient(145deg,#452717b3,transparent 65%),var(--overlay-bg)}
+.widget[data-preset=retro] .widget-title{font-family:Georgia,serif;letter-spacing:.04em}
+.widget[data-preset=retro] .wheel-art{filter:drop-shadow(0 0 5px #e88c49aa)}
+.widget[data-preset=minimal]{border-radius:8px;box-shadow:none;border-color:#ffffff34}
+.widget[data-preset=minimal] .widget-top{border-bottom:0}
+.widget[data-preset=neon]{border-color:var(--accent);border-radius:9px;box-shadow:inset 0 0 16px color-mix(in srgb,var(--accent) 20%,transparent),0 0 20px color-mix(in srgb,var(--accent) 42%,transparent)}
+.widget[data-preset=neon] .reading strong{text-shadow:0 0 14px var(--accent)}
+.widget[data-preset=neon] .wheel-art{filter:drop-shadow(0 0 5px var(--accent))}
+
+.extension-download{display:block;text-align:center;text-decoration:none}.extension-download[hidden]{display:none}
+.surge-alert{position:absolute;z-index:2;top:44%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;background:#201507;color:#ffe7a8;border:2px solid #ffc267;border-radius:8px;padding:10px 16px;font:bold 16px var(--mono);letter-spacing:.14em;box-shadow:0 0 20px #ff9b42a0;animation:surge-in .28s ease-out both;pointer-events:none}
+.widget{position:relative}.surge-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.surge-controls input{width:76px}
+@keyframes surge-in{from{opacity:0;transform:translate(-50%,-50%) scale(.9)}}
+@media(prefers-reduced-motion:reduce){.surge-alert{animation:none}}
+/* Export typography is sized for the OBS source viewport. */
+html[data-mode=overlay] .widget{width:100%;max-width:620px;box-shadow:none;border-color:color-mix(in srgb,var(--accent) 68%,#292230)}
+html[data-mode=overlay] .widget[data-layout=compact]{max-width:500px}
+html[data-mode=overlay] .widget .reading strong{text-shadow:none}
+html[data-mode=overlay] .widget .wheel-art{filter:none}
+html[data-mode=overlay] .state,html[data-mode=overlay] .metric-row span{color:#e1d8ed}
+@media(min-width:500px){
+  html[data-mode=overlay] .widget .widget-top{padding:12px 18px}
+  html[data-mode=overlay] .widget-title{font-size:20px;line-height:1.2}
+  html[data-mode=overlay] .feed{font-size:12px}
+  html[data-mode=overlay] .widget .widget-main{padding:14px 18px}
+  html[data-mode=overlay] .wheel-art{width:112px;height:112px}
+  html[data-mode=overlay] .reading strong{font-size:62px}
+  html[data-mode=overlay] .reading span,html[data-mode=overlay] .state{font-size:15px}
+  html[data-mode=overlay] .widget .metric-row div{padding:9px 18px}
+  html[data-mode=overlay] .metric-row span{font-size:12px}
+  html[data-mode=overlay] .metric-row strong{font-size:20px}
+  html[data-mode=overlay] .widget[data-layout=compact] .wheel-art{width:64px;height:64px}
+  html[data-mode=overlay] .widget[data-layout=compact] .reading strong{font-size:44px}
+}
+</style>
+<script>
+if (new URLSearchParams(location.search).get('mode') === 'overlay') document.documentElement.dataset.mode = 'overlay';
+</script>
+</head>
+<body>
+<div id="studio">
+<header class="mast"><div class="shell mast-inner"><a class="brand" href="./"><i aria-hidden="true"><svg viewBox="20 24 56 52" focusable="false"><path d="M29 37v-7h9v5h20v-5h9v7h5v22h-7v7H31v-7h-7V37z" fill="#f0a965" stroke="#392338" stroke-width="2" stroke-linejoin="round"/><path d="M32 34h5v4h-5zm27 0h5v4h-5z" fill="#e07c8e"/><path d="M34 52h9v-5h10v5h9v8h-5v4H39v-4h-5z" fill="#ffe7c2"/><path d="M33 45h5v6h-5zm25 0h5v6h-5zm12 8h5v4h-5zm-48 0h5v4h-5z" fill="#372438"/><path d="M45 52h6v4h-6z" fill="#ab576f"/></svg></i><span>SQUEEK<span class="brand-accent">HUB</span><small>THE WHEEL NETWORK</small></span></a><nav aria-label="Main navigation"><a href="./">Radio</a><a href="./studio.html" aria-current="page">Studio</a><a href="./oracle.html">Oracle</a></nav><span class="mast-tag">INDEPENDENT<br>BROADCAST</span></div></header>
+<main class="shell studio-workspace">
+<section class="hero"><p class="eyebrow">02 / BROADCAST STUDIO</p><h1>Stream Overlay Builder</h1><p>Customize a floating card with live wheel activity or a recorded run.</p></section>
+<div class="workspace">
+<section class="panel" aria-labelledby="preview-title">
+<div class="bar"><h2 id="preview-title">Overlay preview</h2><div class="seg" aria-label="Preview data"><button type="button" id="replay" aria-pressed="false" hidden>Restart replay</button><button type="button" id="live" aria-pressed="true">Live feed</button><button type="button" id="sample" aria-pressed="false">Sample</button></div></div>
+<div class="stage" id="stage"></div>
+<div class="under"><span id="preview-status" role="status">Connecting to Squeekchain…</span></div>
+</section>
+<aside class="panel" aria-labelledby="settings-title">
+<div class="bar"><h2 id="settings-title">Customize</h2><button type="button" id="reset" class="seg secondary">Reset</button></div>
+<div class="controls">
+<div class="group"><span class="label" id="preset-label">Overlay preset</span><div class="preset-list" role="group" aria-labelledby="preset-label">
+<button type="button" class="seg secondary" data-preset-option="retro" aria-pressed="false">Retro Radio</button>
+<button type="button" class="seg secondary" data-preset-option="minimal" aria-pressed="false">Minimal</button>
+<button type="button" class="seg secondary" data-preset-option="neon" aria-pressed="false">Neon</button>
+</div></div>
+<label class="group"><span class="label">Overlay title</span><input id="title-input" class="field" type="text" maxlength="42" autocomplete="off"></label>
+<div class="group"><span class="label" id="palette-label">Accent color</span><div class="swatches" aria-labelledby="palette-label" role="group">
+<button type="button" data-theme="violet" style="--swatch:#c3aaff" aria-label="Violet" aria-pressed="true"></button>
+<button type="button" data-theme="mint" style="--swatch:#8bf3c3" aria-label="Mint" aria-pressed="false"></button>
+<button type="button" data-theme="amber" style="--swatch:#ffc279" aria-label="Amber" aria-pressed="false"></button>
+<button type="button" data-theme="ice" style="--swatch:#9cdfff" aria-label="Ice blue" aria-pressed="false"></button>
+</div></div>
+<label class="group"><span class="label">Layout</span><select id="layout" class="field"><option value="card">Standard card</option><option value="compact">Compact card</option></select></label>
+<label class="toggle">Show Wheel Surge alert <input type="checkbox" id="surge-enabled"></label>
+<div class="surge-controls"><label for="surge-rpm">Alert RPM</label><input class="field" id="surge-rpm" type="number" min="1" max="300" value="50"><button type="button" class="seg secondary" id="surge-test">Test alert</button></div>
+<label class="toggle">Show block and work counters <input type="checkbox" id="metrics" checked></label>
+<label class="toggle">Solid card background <input type="checkbox" id="solid"></label>
+</div>
+<div class="actions">
+<a class="primary extension-download" id="extension-download" href="./squeek-hub-chrome-extension.zip" download>Download Chrome extension</a>
+<button type="button" class="secondary" id="float-card" hidden>Open floating card</button>
+<a class="secondary extension-download" id="standalone-studio" href="./studio.html" target="_blank" rel="noopener" hidden>Open Studio in its own tab</a>
+<p id="action-status" class="notice" role="status" hidden></p>
+<p class="action-note">The floating card uses the live feed or the selected replay. Sample data stays in the preview.</p>
+</div></aside></div>
+<details class="panel guide" id="extension-guide"><summary>Install the Chrome extension</summary><ol>
+<li>Download and unzip the extension.</li>
+<li>In Chrome, open <code>chrome://extensions</code> and turn on <strong>Developer mode</strong>.</li>
+<li>Click <strong>Load unpacked</strong> and select the unzipped folder containing <code>manifest.json</code>.</li>
+<li>Click <strong>Squeek Hub</strong> in Chrome’s Extensions menu. In the tab that opens, click <strong>Open floating card</strong> and keep that tab open.</li>
+</ol></details>
+</main>
+<footer class="shell footer"><span class="built-by">Built by <a href="https://x.com/ramilashrff" target="_blank" rel="noopener noreferrer">@ramilashrff</a></span></footer>
+</div>
+<template id="overlay-template">
+<section class="widget" data-layout="card" data-moving="false" aria-label="Squeektoshi wheel telemetry">
+<div class="surge-alert" hidden>WHEEL SURGE</div>
+<div class="widget-top"><span class="widget-title">Squeektoshi Live</span><span class="feed"><span class="dot" aria-hidden="true"></span><span class="feed-label">CONNECTING</span></span></div>
+<div class="widget-main">
+<svg class="wheel-art" viewBox="0 0 96 96" fill="none" aria-hidden="true">
+<circle cx="48" cy="48" r="45" fill="currentColor" opacity=".09"/>
+<g class="rim"><circle cx="48" cy="48" r="39" stroke="currentColor" stroke-width="2" opacity=".72"/><circle cx="48" cy="48" r="33" stroke="currentColor" stroke-width="2" stroke-dasharray="2 7" opacity=".48"/><path d="M48 9v7m0 64v7M9 48h7m64 0h7M20 20l5 5m46 46 5 5m0-56-5 5M25 71l-5 5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></g>
+<path d="M29 37v-7h9v5h20v-5h9v7h5v22h-7v7H31v-7h-7V37z" fill="#f0a965" stroke="#392338" stroke-width="2" stroke-linejoin="round"/>
+<path d="M32 34h5v4h-5zm27 0h5v4h-5z" fill="#e07c8e"/><path d="M34 52h9v-5h10v5h9v8h-5v4H39v-4h-5z" fill="#ffe7c2"/><path d="M33 45h5v6h-5zm25 0h5v6h-5zm12 8h5v4h-5zm-48 0h5v4h-5z" fill="#372438"/><path d="M45 52h6v4h-6z" fill="#ab576f"/>
+</svg>
+<div><div class="reading"><strong class="rpm">—</strong><span>RPM</span></div><div class="state">Waiting for a wheel reading</div></div>
+</div>
+<div class="metric-row"><div><span>PROJECTED BLOCK</span><strong class="blocks">—</strong></div><div><span>WORK · CURRENT COUNTER</span><strong class="work">—</strong></div></div>
+</section>
+</template>
+<script>
+(() => {
+  'use strict';
+  const endpoint = 'https://api.squeekchain.com/v1/status';
+  const themes = {violet:'#c3aaff', mint:'#8bf3c3', amber:'#ffc279', ice:'#9cdfff'};
+  const presets = {
+    retro:{theme:'amber',layout:'card',metrics:true,solid:true},
+    minimal:{theme:'ice',layout:'compact',metrics:false,solid:false},
+    neon:{theme:'mint',layout:'card',metrics:true,solid:false}
+  };
+  const defaults = {preset:'classic',title:'Squeektoshi Live', theme:'violet', layout:'card', metrics:true, solid:false, surge:false, surgeRpm:50};
+  const storageKey = 'squeek-studio-settings-v1';
+  const params = new URLSearchParams(location.search);
+  const embedded = document.documentElement.dataset.config;
+  const overlay = Boolean(embedded) || document.documentElement.dataset.mode === 'overlay';
+  const studio = document.getElementById('studio');
+  const template = document.getElementById('overlay-template');
+  const widget = template.content.firstElementChild.cloneNode(true);
+  const target = overlay ? document.body : document.getElementById('stage');
+  target.append(widget);
+  if (overlay) { document.documentElement.dataset.mode = 'overlay'; studio?.remove(); }
+  const find = (selector) => widget.querySelector(selector);
+  const status = document.getElementById('preview-status');
+  const format = new Intl.NumberFormat('en-US');
+  const rpmFormat = new Intl.NumberFormat('en-US', {maximumFractionDigits:1});
+  let sample = false;
+  let lastReading = null;
+  let recording = null;
+  let replayActive = false;
+  let replayStarted = 0;
+  const runId = params.get('run');
+  const replayButton = document.getElementById('replay');
+  let replayTimer;
+  function startReplay() {
+    clearInterval(replayTimer);
+    replayStarted = performance.now();
+    replayActive = true;
+    sample = false;
+    document.getElementById('live')?.setAttribute('aria-pressed','false');
+    document.getElementById('sample')?.setAttribute('aria-pressed','false');
+    replayButton?.setAttribute('aria-pressed','true');
+    renderFeed();
+    replayTimer = setInterval(renderFeed, 150);
+  }
+  function stopReplay() {
+    replayActive = false;
+    clearInterval(replayTimer);
+    replayButton?.setAttribute('aria-pressed','false');
+    if (runId) {
+      const url = new URL(location.href);
+      url.searchParams.delete('run');
+      history.replaceState(null,'',url);
+    }
+  }
+  function replayReading() {
+    const elapsed = performance.now() - replayStarted;
+    const times = recording.offsets;
+    const finished = elapsed >= times.at(-1) + 1000;
+    const count = times.filter(time => time <= elapsed).length;
+    const current = times[count - 1];
+    const previous = times[count - 2];
+    const gap = current - previous;
+    const rpm = !finished && gap > 0 && elapsed - current < Math.max(gap * 1.6, 1000) ? 60000 / gap : 0;
+    if (finished) clearInterval(replayTimer);
+    return {kind:'replay', label:'RUN REPLAY', detail:finished ? 'Replay complete' : 'Recorded wheel activity', rpm, work:null, blocks:null};
+  }
+  async function loadReplay() {
+    const embeddedReplay = document.documentElement.dataset.replay;
+    if (!runId && !embeddedReplay) return;
+    try {
+      if (embeddedReplay) recording = JSON.parse(embeddedReplay);
+      else {
+        const response = await fetch('./runs.json', {signal:AbortSignal.timeout(8000)});
+        if (!response.ok) throw new Error('Run archive unavailable');
+        recording = (await response.json()).find(run => run.id === runId);
+      }
+      if (!recording?.offsets?.length) throw new Error('Run not found');
+      if (replayButton) {
+        replayButton.hidden = false;
+        replayButton.addEventListener('click', startReplay);
+      }
+      startReplay();
+    } catch {
+      display({kind:'warning', label:'NO REPLAY', detail:'Recorded run unavailable'});
+    }
+  }
+
+  function normalize(raw = {}) {
+    return {
+      title: typeof raw.title === 'string' ? raw.title.trim().slice(0,42) || defaults.title : defaults.title,
+      preset: Object.hasOwn(presets, raw.preset) ? raw.preset : defaults.preset,
+      theme: Object.hasOwn(themes, raw.theme) ? raw.theme : defaults.theme,
+      layout: raw.layout === 'compact' ? 'compact' : 'card',
+      metrics: raw.metrics !== false,
+      solid: raw.solid === true,
+      surge: raw.surge === true,
+      surgeRpm: Number.isInteger(raw.surgeRpm) && raw.surgeRpm >= 1 && raw.surgeRpm <= 300 ? raw.surgeRpm : defaults.surgeRpm
+    };
+  }
+
+  function readSettings() {
+    if (embedded) {
+      try { return normalize(JSON.parse(embedded)); } catch { return {...defaults}; }
+    }
+    if (overlay) {
+      return normalize({preset:params.get('preset'), title:params.get('title'), theme:params.get('theme'), layout:params.get('layout'),
+        metrics:params.get('metrics') !== '0', solid:params.get('solid') === '1', surge:params.get('surge') === '1', surgeRpm:Number(params.get('surgeRpm'))});
+    }
+    try { return normalize(JSON.parse(localStorage.getItem(storageKey)) || {}); }
+    catch { return {...defaults}; }
+  }
+
+  let settings = readSettings();
+
+  function applySettings() {
+    widget.style.setProperty('--accent', themes[settings.theme]);
+    widget.dataset.preset = settings.preset;
+    widget.dataset.layout = settings.layout;
+    widget.dataset.solid = settings.solid;
+    find('.widget-title').textContent = settings.title;
+    find('.metric-row').hidden = !settings.metrics || replayActive;
+    if (!overlay) {
+      document.querySelectorAll('[data-preset-option]').forEach(button => {
+        button.setAttribute('aria-pressed',String(button.dataset.presetOption === settings.preset));
+      });
+      document.querySelectorAll('[data-theme]').forEach(button => {
+        button.setAttribute('aria-pressed', String(button.dataset.theme === settings.theme));
+      });
+    }
+  }
+
+  let surgeTimer;
+  let aboveThreshold = false;
+  function showSurge() {
+    const banner = find('.surge-alert');
+    banner.hidden = false;
+    clearTimeout(surgeTimer);
+    surgeTimer = setTimeout(() => { banner.hidden = true; },3200);
+  }
+  function display(reading) {
+    const {kind, label, detail, rpm, work, blocks} = reading;
+    const validFeed = kind === 'live' || replayActive;
+    if (validFeed && Number.isFinite(rpm)) {
+      const above = rpm >= settings.surgeRpm;
+      if (settings.surge && above && !aboveThreshold) showSurge();
+      aboveThreshold = above;
+    }
+    widget.dataset.feed = kind;
+    find('.metric-row').hidden = !settings.metrics || replayActive;
+    find('.feed-label').textContent = label;
+    find('.state').textContent = detail;
+    find('.rpm').textContent = rpm == null ? '—' : rpmFormat.format(rpm);
+    find('.work').textContent = work ?? '—';
+    find('.blocks').textContent = blocks ?? '—';
+    widget.dataset.moving = String(rpm > 0);
+    if (rpm > 0) widget.style.setProperty('--spin', Math.max(.2, 60 / rpm) + 's');
+    if (status) status.textContent = kind === 'sample' ? 'Simulated preview' : detail;
+  }
+
+  function integer(value) {
+    return typeof value === 'string' && /^\d{1,30}$/.test(value) ? format.format(BigInt(value)) : null;
+  }
+
+  function interpret(data) {
+    const m = data?.measurement;
+    const unknown = {kind:'warning', label:'NO FEED', detail:'Waiting for a wheel reading'};
+    if (!m || data.status === 'unavailable') return unknown;
+    const received = Date.parse(m.receivedAt);
+    const observed = Date.parse(m.observedAt);
+    const maxAge = Number.isFinite(m.staleAfterSeconds) && m.staleAfterSeconds > 0 ? m.staleAfterSeconds : 120;
+    if (m.freshness !== 'online' || !Number.isFinite(received) || !Number.isFinite(observed)
+        || Date.now() - Math.min(received, observed) > maxAge * 1000) {
+      return {kind:'warning', label:'STALE', detail:'Waiting for a fresh wheel reading'};
+    }
+    if (!Number.isSafeInteger(m.rpmMilli) || m.rpmMilli < 0 || !['ACTIVE','IDLE'].includes(m.coreStatus)) {
+      return {kind:'warning', label:'NO FEED', detail:'Wheel reading unavailable'};
+    }
+    const isHardware = m.provenance === 'hardware';
+    const source = {simulated:'SIMULATED', replay:'REPLAY', derived:'DERIVED'}[m.provenance];
+    if (!isHardware && !source) return unknown;
+    return {
+      kind:isHardware ? 'live' : 'sample', label:isHardware ? 'LIVE DATA' : source,
+      detail:m.rpmMilli > 0 ? 'Wheel turning' : 'Wheel idle', rpm:m.rpmMilli/1000,
+      work:integer(m.cumulativeWorkUnits),
+      blocks:data.builder?.status === 'available' ? integer(data.builder.projected?.blockHeight) : null
+    };
+  }
+
+  function renderFeed() {
+    if (replayActive) display(replayReading());
+    else if (sample) {
+      display({kind:'sample', label:'SAMPLE DATA', detail:'Wheel turning', rpm:37.4, work:'18,553', blocks:'1,999'});
+    } else if (lastReading) display(lastReading);
+    else display({kind:'warning',label:'CONNECTING',detail:'Connecting to Squeekchain…'});
+  }
+
+  async function poll() {
+    let delay = 10000;
+    try {
+      const response = await fetch(endpoint, {credentials:'omit', signal:AbortSignal.timeout(8000)});
+      if (!response.ok) {
+        const retry = Number(response.headers.get('Retry-After'));
+        if (Number.isFinite(retry) && retry > 0) delay = Math.max(delay, retry * 1000);
+        throw new Error('Status unavailable');
+      }
+      lastReading = interpret(await response.json());
+    } catch {
+      lastReading = {kind:'warning',label:'OFFLINE',detail:'Feed unavailable · retrying'};
+    }
+    renderFeed();
+    setTimeout(poll,delay);
+  }
+
+  if (!overlay) {
+    const title = document.getElementById('title-input');
+    const layout = document.getElementById('layout');
+    const metrics = document.getElementById('metrics');
+    const solid = document.getElementById('solid');
+    const live = document.getElementById('live');
+    const sampleButton = document.getElementById('sample');
+    const actionStatus = document.getElementById('action-status');
+    function message(value) {
+      actionStatus.hidden = !value;
+      actionStatus.textContent = value;
+    }
+    function update(change) {
+      settings = normalize({...settings,...change});
+      try { localStorage.setItem(storageKey, JSON.stringify(settings)); } catch {}
+      message('');
+      applySettings();
+    }
+    function fillControls() {
+      title.value = settings.title;
+      layout.value = settings.layout;
+      metrics.checked = settings.metrics;
+      solid.checked = settings.solid;
+      document.getElementById('surge-enabled').checked = settings.surge;
+      document.getElementById('surge-rpm').value = settings.surgeRpm;
+    }
+    function setSample(value) {
+      stopReplay();
+      sample = value;
+      live.setAttribute('aria-pressed', String(!value));
+      sampleButton.setAttribute('aria-pressed', String(value));
+      renderFeed();
+    }
+    fillControls();
+    title.addEventListener('input', () => update({title:title.value}));
+    layout.addEventListener('change', () => update({layout:layout.value}));
+    metrics.addEventListener('change', () => update({metrics:metrics.checked}));
+    document.getElementById('surge-enabled').addEventListener('change',event => {
+      aboveThreshold = false;
+      update({surge:event.target.checked});
+      if (!settings.surge) find('.surge-alert').hidden = true;
+      renderFeed();
+    });
+    document.getElementById('surge-rpm').addEventListener('change',event => {
+      aboveThreshold = false;
+      update({surgeRpm:event.target.valueAsNumber});
+      fillControls();
+      renderFeed();
+    });
+    document.getElementById('surge-test').addEventListener('click',showSurge);
+    solid.addEventListener('change', () => update({solid:solid.checked}));
+    document.querySelectorAll('[data-theme]').forEach(button => button.addEventListener('click', () => update({theme:button.dataset.theme})));
+    document.querySelectorAll('[data-preset-option]').forEach(button => button.addEventListener('click', () => {
+      const preset = button.dataset.presetOption;
+      update({preset,...presets[preset]});
+      fillControls();
+    }));
+    document.getElementById('reset').addEventListener('click', () => { update(defaults); fillControls(); });
+    live.addEventListener('click', () => setSample(false));
+    sampleButton.addEventListener('click', () => {
+      window.documentPictureInPicture?.window?.close();
+      setSample(true);
+    });
+
+    const floatButton = document.getElementById('float-card');
+    const standalone = document.getElementById('standalone-studio');
+    const extension = location.protocol === 'chrome-extension:';
+    if (extension) {
+      document.querySelector('.mast nav').hidden = true;
+      document.querySelector('.mast .brand').href = './studio.html';
+      document.getElementById('extension-download').hidden = true;
+      document.getElementById('extension-guide').hidden = true;
+    }
+    if (window.top !== window) {
+      standalone.href = location.href;
+      standalone.hidden = false;
+    } else if (window.documentPictureInPicture) {
+      floatButton.hidden = false;
+    } else {
+      message('Floating cards require a Chrome version with Document Picture-in-Picture.');
+    }
+
+    floatButton.addEventListener('click',async () => {
+      const pip = window.documentPictureInPicture;
+      if (pip.window) {
+        pip.window.close();
+        return;
+      }
+      floatButton.disabled = true;
+      try {
+        const popup = await pip.requestWindow({
+          width: settings.layout === 'compact' ? 380 : 440,
+          height: settings.layout === 'compact' ? 185 : 250
+        });
+        if (sample) setSample(false);
+        const doc = popup.document;
+        doc.title = 'Squeektoshi Live';
+        doc.documentElement.dataset.mode = 'overlay';
+        doc.head.append(document.querySelector('style').cloneNode(true));
+        Object.assign(doc.body.style,{margin:'0',padding:'0',background:'#100e15',overflow:'auto'});
+        Object.assign(widget.style,{maxWidth:'none',borderRadius:'0',minHeight:'100vh'});
+        doc.body.append(widget);
+        floatButton.textContent = 'Close floating card';
+        message('The floating card is open. Keep this tab open while you browse.');
+        popup.addEventListener('pagehide',() => {
+          for (const prop of ['max-width','border-radius','min-height']) widget.style.removeProperty(prop);
+          target.append(widget);
+          floatButton.textContent = 'Open floating card';
+          message('');
+        },{once:true});
+      } catch {
+        message('Chrome could not open the floating card. Try again from this tab.');
+      } finally {
+        floatButton.disabled = false;
+      }
+    });
+  }
+
+  applySettings();
+  renderFeed();
+  if (embedded || overlay) document.getElementById('hub-css')?.remove();
+  if (runId || document.documentElement.dataset.replay) loadReplay();
+  if (!overlay || (!runId && !document.documentElement.dataset.replay)) poll();
+})();
+</script>
+</body>
+</html>
