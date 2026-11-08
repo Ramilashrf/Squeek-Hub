@@ -96,3 +96,5 @@ python3 extension/package.py
 The script writes the new ZIP to `dist/squeek-hub-chrome-extension.zip`.
 
 Built by [@ramilashrff](https://x.com/ramilashrff).
+
+squeekchain-project: 87a36431-c570-4b9a-9e09-6360ac947fa9
