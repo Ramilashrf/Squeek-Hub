@@ -17,7 +17,7 @@ if count != 2:
 files['studio.html'] = studio
 for name in ('manifest.json', 'background.js'):
     files[name] = (root / 'extension' / name).read_bytes()
-for name in ('hub.css', 'runs.json'):
+for name in ('hub.css', 'runs.json', 'theme.js'):
     files[name] = (root / 'dist' / name).read_bytes()
 
 with ZipFile(root / 'dist/squeek-hub-chrome-extension.zip', 'w') as archive:

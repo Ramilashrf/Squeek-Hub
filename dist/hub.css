@@ -260,3 +260,51 @@ html:not([data-mode=overlay]) .studio-workspace .stage {
 .run-compare {
   background: rgba(16, 23, 17, .68);
 }
+
+.mast-tools{display:flex;align-items:center;gap:14px}
+.theme-toggle{border:1px solid var(--line);border-radius:20px;background:var(--panel);color:var(--ink);padding:7px 12px;font-size:12px;font-weight:700;white-space:nowrap}
+.theme-toggle:hover,.theme-toggle[aria-pressed=true]{border-color:var(--lime);color:var(--lime)}
+@media(max-width:460px){
+  .mast-inner{flex-wrap:wrap;gap:8px;padding-block:8px}
+  .mast nav{order:1;flex-basis:100%;justify-content:center}
+}
+
+html[data-color-mode=dark]:not([data-mode=overlay]){
+  --paper:#070707;
+  --panel:#151310;
+  --ink:#f6eddb;
+  --dim:#c1b5a1;
+  --lime:#f4cc79;
+  --line:#443722;
+  --dark-surface:rgba(17,15,12,.72);
+  --dark-control:#181511;
+}
+html[data-color-mode=dark]:not([data-mode=overlay]) body{
+  background-image:radial-gradient(circle,rgba(232,181,81,.40) 1px,transparent 1.4px);
+}
+[data-color-mode=dark] :is(.tile,.next>a,.run-compare),
+[data-color-mode=dark] .radio-intro #player,
+html[data-color-mode=dark]:not([data-mode=overlay]) .studio-workspace .panel{
+  background:var(--dark-surface);
+}
+[data-color-mode=dark] :is(.mast nav,.stations,.sample,.run,.mini-player,.run-action,.prediction-actions button,.postcard-dialog button,.report-card thead){
+  background:var(--dark-control);
+  border-color:var(--line);
+}
+[data-color-mode=dark] :is(.stations button[aria-pressed=true],.stations button:hover,.mast nav a:not([aria-current]):hover){
+  background:#302416;
+  border-color:#775a32;
+}
+[data-color-mode=dark] .mast nav a[aria-current=page]{color:#20170b}
+html[data-color-mode=dark]:not([data-mode=overlay]) .studio-workspace{
+  --line:#443722;
+  --violet:#f4cc79;
+  --ink:#21170b;
+}
+html[data-color-mode=dark]:not([data-mode=overlay]) .studio-workspace .stage{
+  background:radial-gradient(ellipse at 50% 50%,#47351f66,transparent 70%),radial-gradient(circle,#9a763c 1px,transparent 1.1px) #0d0b08;
+  background-size:auto,17px 17px;
+}
+[data-color-mode=dark] .studio-workspace :is(.field,.secondary,.seg){background:var(--dark-control);border-color:var(--line)}
+[data-color-mode=dark] .studio-workspace :is(.seg,.preset-list) button[aria-pressed=true]{background:#302416;border-color:#775a32;color:#f4cc79}
+[data-color-mode=dark] .studio-workspace .primary:hover{background:#ffe4a5}
